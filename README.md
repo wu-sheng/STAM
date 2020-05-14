@@ -1,4 +1,4 @@
-STAM: Enhancing Topology Auto Detection For A Highly Distributed and Large-Scale Application System
+# STAM: Enhancing Topology Auto Detection For A Highly Distributed and Large-Scale Application System
 
 - Sheng Wu 吴 晟
 - wusheng@apache.org
