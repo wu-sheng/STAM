@@ -123,5 +123,25 @@ Figure 6, STAM traffic generation when the proxy uninstrumentatio
 
 This paper described the STAM, which is to the best of our knowledge the best topology detection method for distributed tracing systems. It replaces the time-window based topology analysis method for tracing-based monitoring systems. It removes the resource cost of disk and memory for time-window baseds analysis permanently and totally, and the barriers of horizontal scale. One STAM implementation, Apache SkyWalking, is widely used for monitoring hundreds of applications in production. Some of them generated over 100 TB tracing data per day and topology for over 200 services in real time.
 
+# Acknowledgments 
+We thank all contributors of Apache SkyWalking project for suggestions, code contributions to implement the STAM, and feedback from using the STAM and SkyWalking in their production environment.
+
 # License
 This paper and the STAM are licensed in the [Apache 2.0](LICENSE)
+
+# References
+
+[1] Dapper, a Large-Scale Distributed Systems Tracing Infrastructure, https://research.google.com/pubs/pub36356.html?spm=5176.100239.blogcont60165.11.OXME9Z
+[2] Apache SkyWalking, http://skywalking.apache.org/ 
+[3] Apache Open Users, https://github.com/apache/skywalking/blob/master/docs/powered-by.md
+[4] Zipkin, https://zipkin.io/
+[5] Kubernetes, Production-Grade Container Orchestration. Automated container deployment, scaling, and management. https://kubernetes.io/
+[6] OpenTracing Specification https://github.com/opentracing/specification/blob/master/specification.md
+[7] Apache Tomcat, http://tomcat.apache.org/
+[8] Apache HttpComponents, https://hc.apache.org/
+[9] Zipkin doc, ‘Instrumenting a library’ section, ‘Communicating trace information’ paragraph. https://zipkin.io/pages/instrumenting
+[10] Jaeger Tracing, https://jaegertracing.io/
+[11] Envoy Proxy, http://envoyproxy.io/
+[12] Nginx, http://nginx.org/
+[13] Spring Cloud Gateway, https://spring.io/projects/spring-cloud-gateway
+[14] Envoy Route Configuration, https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/rds.proto.html?highlight=request_headers_to_
