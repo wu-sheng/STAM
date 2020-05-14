@@ -122,3 +122,6 @@ Figure 6, STAM traffic generation when the proxy uninstrumentatio
 # Conclusion
 
 This paper described the STAM, which is to the best of our knowledge the best topology detection method for distributed tracing systems. It replaces the time-window based topology analysis method for tracing-based monitoring systems. It removes the resource cost of disk and memory for time-window baseds analysis permanently and totally, and the barriers of horizontal scale. One STAM implementation, Apache SkyWalking, is widely used for monitoring hundreds of applications in production. Some of them generated over 100 TB tracing data per day and topology for over 200 services in real time.
+
+# License
+This paper and the STAM are licensed in the [Apache 2.0](LICENSE)
