@@ -131,17 +131,17 @@ This paper and the STAM are licensed in the [Apache 2.0](LICENSE)
 
 # References
 
-[1] Dapper, a Large-Scale Distributed Systems Tracing Infrastructure, https://research.google.com/pubs/pub36356.html?spm=5176.100239.blogcont60165.11.OXME9Z
-[2] Apache SkyWalking, http://skywalking.apache.org/ 
-[3] Apache Open Users, https://github.com/apache/skywalking/blob/master/docs/powered-by.md
-[4] Zipkin, https://zipkin.io/
-[5] Kubernetes, Production-Grade Container Orchestration. Automated container deployment, scaling, and management. https://kubernetes.io/
-[6] OpenTracing Specification https://github.com/opentracing/specification/blob/master/specification.md
-[7] Apache Tomcat, http://tomcat.apache.org/
-[8] Apache HttpComponents, https://hc.apache.org/
-[9] Zipkin doc, ‘Instrumenting a library’ section, ‘Communicating trace information’ paragraph. https://zipkin.io/pages/instrumenting
-[10] Jaeger Tracing, https://jaegertracing.io/
-[11] Envoy Proxy, http://envoyproxy.io/
-[12] Nginx, http://nginx.org/
-[13] Spring Cloud Gateway, https://spring.io/projects/spring-cloud-gateway
-[14] Envoy Route Configuration, https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/rds.proto.html?highlight=request_headers_to_
+1. Dapper, a Large-Scale Distributed Systems Tracing Infrastructure, https://research.google.com/pubs/pub36356.html?spm=5176.100239.blogcont60165.11.OXME9Z
+1. Apache SkyWalking, http://skywalking.apache.org/ 
+1. Apache Open Users, https://github.com/apache/skywalking/blob/master/docs/powered-by.md
+1. Zipkin, https://zipkin.io/
+1. Kubernetes, Production-Grade Container Orchestration. Automated container deployment, scaling, and management. https://kubernetes.io/
+1. OpenTracing Specification https://github.com/opentracing/specification/blob/master/specification.md
+1. Apache Tomcat, http://tomcat.apache.org/
+1. Apache HttpComponents, https://hc.apache.org/
+1. Zipkin doc, ‘Instrumenting a library’ section, ‘Communicating trace information’ paragraph. https://zipkin.io/pages/instrumenting
+1. Jaeger Tracing, https://jaegertracing.io/
+1. Envoy Proxy, http://envoyproxy.io/
+1. Nginx, http://nginx.org/
+1. Spring Cloud Gateway, https://spring.io/projects/spring-cloud-gateway
+1. Envoy Route Configuration, https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/rds.proto.html?highlight=request_headers_to_
