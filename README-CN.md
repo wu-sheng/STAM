@@ -13,25 +13,25 @@
 STAM已在ASF（Apache Software Foundation）的一个开源APM（application performance monitoring system）项目 Apache SkyWalking[2]中实施，该项目已在许多大型企业的生产环境中广泛使用[3]，其中包括阿里巴巴、华为、腾讯、滴滴、小米、中国移动和其他企业（航空公司、金融机构等）。它具有更好的水平缩放特性，可显著降低负载和内存成本。
 
 # 介绍
-Monitoring the highly distributed system, especially with a micro-service architecture, is very complex. Many RPCs, including HTTP, gRPC, MQ, Cache, and Database accesses, are behind a single client-side request. Allowing  the IT team to understand the dependency relationships among thousands of services is the key feature and first step for observability of a whole distributed system. A distributed tracing system is capable of collecting traces, including all distributed request paths. Dependency relationships have been logically included in the trace data. A distributed tracing system, such as Zipkin [4] or Jaeger Tracing [10], provides built-in dependency analysis features, but many analysis features build on top of that. There are at least two fundamental limitations: timeliness and consistent accuracy.
+监控高度分布式系统，尤其是使用微服务架构的非常复杂。许多的PRC调用，包括HTTP、gPRC、MQ、Cache和数据库的访问都在单个客户端请求之后。让IT团队了解数千个服务之间的依赖关系是系统可观察性的关键所在也是第一步。分布式追踪系统能够收集追踪，包括所有的分布式请求路径。逻辑上已经将依赖关系包含在追踪数据中，例如Zipkin [4] 或者 Jaeger Tracing [10]，之类的分布式追踪系统提供了内置的依赖关系分析功能，但许多分析功能都基于此方案。至少有两个基本条件：实时性和一致性。
 
-Strong timeliness is required to match the mutability of distributed application system dependency relationship, including service level and service instance level dependency. 
+需要高性能的实时性来匹配分布式应用程序系统依赖关系的可变性，包括服务级别和服务实例级别的依赖。
 
-A Service is a logic group of instances which have the same functions or codes. 
+服务是具有相同功能或代码的实例组。
 
-A Service Instance is usually an OS level process, such as a JVM process. The relationships between services and instances are mutable, depending on the configuration, codes and network status. The dependency could change over time.
+服务实例通常是指系统级别的进程，例如JVM进程。服务和实例之间的关系是可变的，具体取决于配置、代码和网络状态。依赖关系可能会随着时间而变化。
 
 <p align="center">
 <img src="images/dapper-span.png"/>
 <br/>
-Figure 1, Generated spans in traditional Dapper based tracing system.
+图 1, 在传统的Dapper系统中生成的spans。
 </p>
 
-The span model in the Dapper paper and existing tracing systems，such as Zipkin instrumenting mode[9], just propagates the span id to the server side. Due to this model, 
-dependency analysis  requires a certain time window. The tracing spans are  collected at both client- and server-sides, because the relationship is recorded. Due to that, the analysis process has to wait for the client and server spans to match in the same time window, in order to output the result, Service A depending on Service B. So, this time window must be over the duration of this RPC request; otherwise, the conclusion will be lost. This condition makes the analysis would not react the dependency mutation in second level, in production, it sometimes has to set the window duration in 3-5 mins.
-Also, because of the Windows-based design, if one side involves a long duration task, it can’t easily achieve consistent accuracy. Because in order to make the analysis as fast as possible, the analysis period is less than 5 minutes. But some spans can’t match its parent or children if the analysis is incomplete or crosses  two time windows. Even if we added a mechanism to process the spans left in the previous stages, still some would have to be abandoned to keep the dataset size and memory usage reasonable.
+Dapper论文中的span模型和现有追踪系统（例如：Zipkin instrumenting mode[9]）只是将spam id传播到服务端。由于这种模式，依赖分析需要一定的时间窗口。因为记录了关系，所以在客户端和服务端都收集了span。因此，分析过程必须等待客户端和服务端span在同一时间窗口内才能匹配，才能输出结果：Service A依赖 Service B。因此，RPC请求必须在此时间窗口内，否则，将丢失依赖关系。这种情况使得分析系统不会在第二级反应依赖变化，在生产环境中，有时必须将时间窗口设置为3到5分钟。
 
-In the STAM, we introduce a new span and context propagation models, with the new analysis method. These new models add the peer network address (IP or hostname) used at client side, client service instance name and client service name, into the context propagation model. Then it passes the RPC call from client to server, just as the original trace id and span id in the existing tracing system, and collects it in the server-side span. The new analysis method can easily generate the client-server relationship directly without waiting on the client span. It also sets the peer network address as one alias of the server service. After the across cluster node data sync, the client-side span analysis could use this alias metadata to generate the client-server relationship directly too. By using these new models and method in Apache SkyWalking, we remove the time windows-based analysis permanently, and fully use the streaming analysis mode with less than 5 seconds latency and consistent accuracy
+另外，基于时间窗口的设计，如果一侧涉及到长时间运行的任务，那么就很难轻松的获取精确的依赖关系。因为为了使分析尽可能的快速，所以分析时间必须少于5分钟。但是，如果分析数据不完整或跨越两个时间窗口，则某些span将无法匹配父级或子级，即使我们添加一种机制来处理前一阶段剩余的span，仍然必须放弃一些机制来保证数据集大小和内存使用合理性。
+
+在STAM中，我们使用新的分析方法介绍了新的span和上下文传播模型。with the new analysis method. These new models add the peer network address (IP or hostname) used at client side, client service instance name and client service name, into the context propagation model. Then it passes the RPC call from client to server, just as the original trace id and span id in the existing tracing system, and collects it in the server-side span. The new analysis method can easily generate the client-server relationship directly without waiting on the client span. It also sets the peer network address as one alias of the server service. After the across cluster node data sync, the client-side span analysis could use this alias metadata to generate the client-server relationship directly too. By using these new models and method in Apache SkyWalking, we remove the time windows-based analysis permanently, and fully use the streaming analysis mode with less than 5 seconds latency and consistent accuracy
 
 # New Span Model and Context Model
 The traditional span of a tracing system includes the following fields [1][6][10].
