@@ -1,9 +1,10 @@
 STAM: Enhancing Topology Auto Detection For A Highly Distributed and Large-Scale Application System
 
+[![中文版本](https://img.shields.io/badge/Translation-%E4%B8%AD%E6%96%87-green)](https://github.com/wu-sheng/STAM/README-cn.md)
+
 - Sheng Wu 吴 晟
 - wusheng@apache.org
 
-[![中文版本](https://img.shields.io/badge/Translation-%E4%B8%AD%E6%96%87-green)](https://github.com/wu-sheng/STAM/README-cn.md)
 
 
 # Abstract
