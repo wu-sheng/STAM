@@ -4,6 +4,9 @@ STAM：一个高分布大规模应用系统的拓扑自动检测
 - wusheng@apache.org
 - 翻译：BZFYS
 - 327568824@qq.com
+- 翻译：Yanlong He 何延龙
+- heyanlong@apache.org
+
 
 
 # 摘要
