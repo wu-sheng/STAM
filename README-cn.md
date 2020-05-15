@@ -4,7 +4,7 @@ STAM：针对大型分布式应用系统的拓扑自动检测方法
 - wusheng@apache.org
 - 翻译：BZFYS(327568824@qq.com), Yanlong He 何延龙 (heyanlong@apache.org)
 
-
+[![英文版本](https://img.shields.io/badge/Translation-en-green)](https://github.com/wu-sheng/STAM/README.md)
 
 # 摘要
 对大型分布式系统进行监视，可视化和故障排除是一项重大挑战。当今使用的一种常见工具是分布式跟踪系统（例如Google Dapper）[1]，它基于跟踪数据检测拓扑和度量。当今拓扑检测的一大局限性在于，分析依赖于在给定的时间窗口内汇总客户端和服务器端的跟踪范围，以生成服务的依赖性。这会导致更多的延迟和内存使用，因为在高度分布式的系统中，每个RPC的客户端和服务器范围都必须匹配数百万个随机发生的请求。更重要的是，如果客户端和服务器之间的RPC持续时间长于先前的设置时间窗口或跨越两个窗口，则它可能无法匹配。
