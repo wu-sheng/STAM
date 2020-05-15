@@ -98,7 +98,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 
 即使客户端或服务器端没有工具，STAM也可以正常工作。它仍然保持拓扑尽可能准确。
 
-如果未安装客户端，则erver-side span将不会通过RPC上下文获得任何引用，因此，它将仅使用peer来生成流量，如图4所示。
+如果未安装客户端，则server-side span将不会通过RPC上下文获得任何引用，因此，它将仅使用peer来生成流量，如图4所示。
 
 <p align="center">
 <img src="images/STAM-no-client-instrumentation.png"/>
