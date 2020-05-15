@@ -1,4 +1,4 @@
-# STAM: 为高度分布式系统和大规模应用系统增强拓扑自动检测
+# STAM: 一个高度分布式系统和大规模应用系统增强拓扑自动检测方法
 
 - Sheng Wu 吴 晟
 - wusheng@apache.org
@@ -31,13 +31,13 @@ Dapper论文中的span模型和现有追踪系统（例如：Zipkin instrumentin
 
 另外，基于时间窗口的设计，如果一侧涉及到长时间运行的任务，那么就很难轻松的获取精确的依赖关系。因为为了使分析尽可能的快速，所以分析时间必须少于5分钟。但是，如果分析数据不完整或跨越两个时间窗口，则某些span将无法匹配父级或子级，即使我们添加一种机制来处理前一阶段剩余的span，仍然必须放弃一些机制来保证数据集大小和内存使用合理性。
 
-在STAM中，我们使用新的分析方法介绍了新的span和上下文传播模型。with the new analysis method. These new models add the peer network address (IP or hostname) used at client side, client service instance name and client service name, into the context propagation model. Then it passes the RPC call from client to server, just as the original trace id and span id in the existing tracing system, and collects it in the server-side span. The new analysis method can easily generate the client-server relationship directly without waiting on the client span. It also sets the peer network address as one alias of the server service. After the across cluster node data sync, the client-side span analysis could use this alias metadata to generate the client-server relationship directly too. By using these new models and method in Apache SkyWalking, we remove the time windows-based analysis permanently, and fully use the streaming analysis mode with less than 5 seconds latency and consistent accuracy
+在STAM中，我们使用新的分析方法介绍了新的span和上下文传播模型。这个新模型将客户端使用的网络地址IP或主机名、客户端服务实例名和客户端名称添加到上下文传播模型中。然后，它将使用RPC调用从客户端传递到服务器，就像现有追踪系统中的原始trace id和span id一样，将其收集在服务器端span中。新的分析方法可以轻松的直接生成客户端和服务端依赖关系，而无需等待客户端span。它还将网络地址设置为服务端服务的一个别名。在跨集群节点数据同步后，客户端span分析也可以使用此别名元数据直接生成客户端和服务端关系。通过在Apache SkyWalking中使用这些新模型和方法，我们将永久删除基于时间窗口的分析，并以不到5秒的延迟和一致的准确性完全使用流式分析模式。
 
-# New Span Model and Context Model
-The traditional span of a tracing system includes the following fields [1][6][10].
-- A trace id to represent the whole trace.
-- A span id to represent the current span.
-- An operation name to describe what operation this span did.
+# 新Span模型和Context模型
+在追踪系统中，一个span需要以下字段 [1][6][10].
+- 一个trace id，代表整个trace。
+- 一个span id，代表当前span。
+- 一个操作名，描述当前span执行的操作。
 - A start timestamp.
 - A finish timestamp
 - Service and Service Instance names of current span.
