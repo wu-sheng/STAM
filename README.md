@@ -46,6 +46,7 @@ The traditional span of a tracing system includes the following fields [1][6][10
 In the new span model of STAM we add the following fields in the span.
 
 **Span type**. Enumeration, including exit, local and entry. Entry and Local spans are used in a networking related library. Entry spans represent a server-side networking library, such as Apache Tomcat[7]. Exit spans represent the client-side networking library, such as Apache HttpComponents [8].
+
 **Peer Network Address**. Remote "address," suitable for use in exit and entry spans. In Exit spans, the peer network address is the address by the client library to access the server.
 
 These fields usually are optionally included in many tracing system,. But in STAM, we require them in all RPC cases.
