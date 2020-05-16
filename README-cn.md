@@ -1,6 +1,6 @@
 STAM：针对大型分布式应用系统的拓扑自动检测方法
 
-[![英文版本](https://img.shields.io/badge/Translation-en-green)](https://github.com/wu-sheng/STAM/blob/master/README.md)
+[![英文版本](https://img.shields.io/badge/Original_Paper-en-green)](https://github.com/wu-sheng/STAM/blob/master/README.md)
 
 - Sheng Wu 吴 晟
 - wusheng@apache.org
