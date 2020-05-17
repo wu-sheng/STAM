@@ -52,7 +52,7 @@ Dapper论文中的span模型和现有的跟踪系统（例如Zipkin仪器模式[
 
 **Span type**(跨度类型): 枚举类型,Exit，Local和Entry。Entry和Local适用于网络相关的库中。输入范围代表服务器端网络库，例如Apache Tomcat [7]。Exit spans代表客户端网络库，例如Apache HttpComponents [8]。
 
-**Peer Network Address**:(对等网络地址): 远程“Address”，适用于exit和entry的span。在“Exit spans”中，对等网络地址是客户端库访问服务器的地址。通常，这些字段通常包含在许多跟踪系统中。但是在STAM中，我们在所有RPC情况下都需要它们。
+**Peer Network Address**:(对端网络地址): 远程“Address”，适用于exit和entry的span。在“Exit spans”中，对端网络地址是客户端库访问服务器的地址。通常，这个字段通常在许多跟踪系统中是可选的。但是在STAM中，我们在所有RPC情况下都需要它们。
 
 **Context Model**(上下文模型):用于将客户端信息传播到原始RPC调用所携带的服务器端，通常在header（例如HTTP header或MQ header）中传播。在旧的设计中，它带有客户端span的Trace ID和Span ID。在STAM中，我们增强了此模型，添加了父服务名称，parent service instance name(父服务实例名称)和peer of exit span.(出口范围的对等点)。名称可以是文字字符串。所有这些额外的字段将有助于消除流分析的障碍。与现有的上下文模型相比，它使用更多的带宽，但是可以对其进行优化。在Apache SkyWalking中，我们设计了一种注册机制来交换代表这些名称的唯一ID。结果，在RPC上下文中仅添加了3个整数，因此在生产环境中带宽的增加至少小于1％。
 
