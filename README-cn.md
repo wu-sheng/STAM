@@ -44,7 +44,7 @@ Dapper论文中的span模型和现有的跟踪系统（例如Zipkin仪器模式[
 * start timestamp(开始时间戳)。
 * finish timestamp(完成时间戳)。
 * 当前Span的Service和Service Instance名称。
-* 一组零个或多个key：value的span标签。
+* 一组零个或多个键值对组成的的span tag。
 * 一组零个或多个span日志，每个span日志本身就是与时间戳配对的key：value映射。
 * 引用零个或多个因果相关的span。参考包括parent span id和trace id。
 
