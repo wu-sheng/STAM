@@ -124,7 +124,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 <p align="center">
 <img src="images/STAM-uninstrumentation-proxy.png"/>
 <br/>
-图6，代理取消仪器化时STAM流量的生成
+图6，代理无法被监控时，STAM流量的生成
 </p>
 
 # 结论
