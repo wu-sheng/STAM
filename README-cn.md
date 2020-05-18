@@ -70,7 +70,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 
 1. exit span中的对等方已经具有从步骤（1）进行的服务器端范围分析所建立的别名。然后使用别名来代替等，并产生的流量`current service name -> alias service name`和`current service instance name -> alias service instance name`。
 
-2. 如果找不到别名，那么只需为`parent service name -> current service name`和`parent service instance name -> current service instance name`生成流量。
+2. 如果找不到别名，那么只需为`current service name -> peer`和`current service instance name -> peer`生成流量。
 
 3. 如果`peer network address <-> Service Instance Name`可以找到的多个别名，则继续为`current service name -> peer network address`和`current service instance name -> peer network address`生成流量。
 
