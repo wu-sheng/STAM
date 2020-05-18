@@ -75,7 +75,7 @@ Figure 2, Apache SkyWalking uses STAM to detect and visualize the topology of di
 # Evaluation
 In this section, we evaluate the new models and analysis method in the context of several typical cases in which the old method loses timeliness and consistent accuracy.
 
-1.	**New Service Online or Auto Scale Out**
+- 1.**New Service Online or Auto Scale Out**
 
 New services could be added into the whole topology by the developer team randomly, or container operation platform automatically by some scale out policy, like Kubernetes [5]. The monitoring system could not be notified in any case manually. By using STAM, we could detect the new node automatically and also keep the analysis process unblocked and consistent with detected nodes. 
 In this case, a new service and network address (could be IP, port or both) are used. The peer network address <-> service mapping does not exist, the traffic of client service -> peer network address will be generated and persistent in the storage first. After mapping is generated, further traffic of client-service to server-service could be identified, generated and aggregated in the analysis platform. For filling the gap of a few traffic before the mapping generated, we require doing peer network address <-> service mapping translation again in query stage, to merge client service->peer network address and client-service to server-service. In production, the amount of VM for the whole SkyWalking analysis platform deployment is less than 100, syncing among them will finish less than 10 seconds, in most cases it only takes 3-5 seconds. And in the query stage, the data has been aggregated in minutes or seconds at least. The query merge performance is not related to how much traffic happens before the mapping generated, only affected by sync duration, in here, only 3 seconds. Due to that, in minute level aggregation topology, it only adds 1 or 2 relationship records in the whole topology relationship dataset. Considering an over 100 services topology having over 500 relationship records per minute, the payload increase for this query merge is very limited and affordable. This feature is significant in a large and high load distributed system, as we don’t need to concern its scaling capability. And in some fork versions, they choose to update the existing client service->peer network address to client-service to server-service after detecting the new mapping for peer generated, in order to remove the extra load at query stage permanently.
@@ -86,7 +86,7 @@ In this case, a new service and network address (could be IP, port or both) are 
 Figure 3, Span analysis by using the new topology analysis method
 </p>
 
-2.	**Existing Uninstrumented Nodes**
+- 2.**Existing Uninstrumented Nodes**
 
 Every topology detection method has to work in this case. In many cases, there are nodes in the production environment that can’t be instrumented. Causes for this might include:(1) Restriction of the technology. In some golang or C++ written applications, there is no easy way in Java or .Net to do auto instrumentation by the agent. So, the codes may not be instrumented automatically. (2) The middleware, such as MQ, database server, has not adopted the tracing system. This would make it difficult or time consuming to implement the middleware instrumentation. (3) A 3rd party service or cloud service doesn’t support work with the current tracing system. (4) Lack of resources: e.g., the developer or operation team lacks time to make the instrumentation ready. 
 
@@ -108,7 +108,7 @@ As shown in Figure 5, in the other case, with no server-side instrumentation, th
 Figure 5, STAM traffic generation when no server-side instrumentation
 </p>
 
-3.	**Uninstrumented Node Having Header Forward Capability**
+- 3.**Uninstrumented Node Having Header Forward Capability**
 
 Besides the cases we evaluated in (2) Uninstrumented Nodes, there is one complex and special case: the instrumented node has the capability to propagate the header from downstream to upstream, typically in all proxy, such as Envoy[11], Nginx[12], Spring Cloud Gateway[13]. As proxy, it has the capability to forward all headers from downstream to upstream to keep some of information in the header, including the tracing context, authentication, browser information, and routing information, in order to make them accessible by the business services behind the proxy, like Envoy route configuration [14]. When some proxy can’t be instrumented, no matter what the reason, it should not affect the topology detection. 
 
