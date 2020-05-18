@@ -58,7 +58,7 @@ The changes of two models could eliminate the time windows in the analysis proce
 # New Topology Analysis Method
 The new topology analysis method at the core of STAM is processing the span in stream mode.
 The analysis of the server-side span, also named entry span, includes the parent service name, parent service instance name and peer of exit span. So the analysis process could establish the following results.
-1.	Set the peer of exit span as client using alias name of current service and instance. `Peer network address <-> service name` and `peer network address <-> Service instance name` aliases created. These two will sync with all analysis nodes and save storage, allowing more analysis processers to have this alias information.
+1.	Set the peer of exit span as client using alias name of current service and instance. `Peer network address <-> service name` and `peer network address <-> Service instance name` aliases created. These two will sync with all analysis nodes and persistent in the storage, allowing more analysis processers to have this alias information.
 2.	Generate relationships of `parent service name -> current service name` and `parent service instance name -> current service instance name`, unless there is another different `Peer network address <-> Service Instance Name` mapping found. In that case, only generate relationships of `peer network address <-> service name` and `peer network address <-> Service instance name`.
 
 For analysis of the client-side span (exit span), there could three possibilities. 
