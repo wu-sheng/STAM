@@ -62,7 +62,7 @@ Dapper论文中的span模型和现有的跟踪系统（例如Zipkin仪器模式[
 
 STAM核心的新拓扑分析方法是以流模式处理span。server-side span（也称为entry span）的分析针对包括parent service name(父服务名称)，parent service instance name(父服务实例名称)和exit span的peer信息。因此，分析过程可以得出以下结果。
 
-1. 使用当前服务和实例的别名将exit span的对等方设置为客户端。`Peer network address <-> service name`和`peer network address <-> Service instance name`别名。这两个将与所有分析节点同步并节省存储空间，从而允许更多分析处理者拥有此别名信息。
+1. 使用exit span的peer做为当前服务和实例的别名。创建`Peer network address <-> service name`和`peer network address <-> Service instance name`别名。这两个将与所有分析节点同步并保存在存储中，从而允许更多分析处理者拥有此别名信息。
 
 2. 生成`parent service name -> current service name`和`parent service instance name -> current service instance name`两种关系数据，除非发现当前已经存在还有另外一个不同的`Peer network address <-> Service Instance Name`映射关系。在这种情况下，仅生成`peer network address <-> service name`的关系和`peer network address <-> Service instance name`的关系。
 
