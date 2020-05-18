@@ -133,7 +133,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 # 致谢
 我们感谢Apache SkyWalking项目的所有贡献者，感谢他们对此分析模型提出的建议，实现STAM的代码贡献以及在生产环境中使用STAM和SkyWalking，并提供反馈。
 
-# 执照
+# 许可证
 这篇论文和STAM使用Apache 2.0许可协议
 
 # 参考文献
