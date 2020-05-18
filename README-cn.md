@@ -60,7 +60,7 @@ Dapper论文中的span模型和现有的跟踪系统（例如Zipkin仪器模式[
 
 # 新的拓扑分析方法
 
-STAM核心的新拓扑分析方法是以流模式处理span。server-side span（也称为entry span）的分析包括parent service name(父服务名称)，parent service instance name(父服务实例名称)和exit span的对等体。因此，分析过程可以得出以下结果。
+STAM核心的新拓扑分析方法是以流模式处理span。server-side span（也称为entry span）的分析针对包括parent service name(父服务名称)，parent service instance name(父服务实例名称)和exit span的peer信息。因此，分析过程可以得出以下结果。
 
 1. 使用当前服务和实例的别名将exit span的对等方设置为客户端。`Peer network address <-> service name`和`peer network address <-> Service instance name`别名。这两个将与所有分析节点同步并节省存储空间，从而允许更多分析处理者拥有此别名信息。
 
