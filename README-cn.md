@@ -116,7 +116,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 图5，没有服务器端检测时的STAM流量生成
 </p>
 
-3. **具有报头转发能力的未配置节点**
+- 3. **具有报头转发能力的未配置节点**
 除了我们在（2）未配置节点中评估的情况外，还有一种复杂而特殊的情况：被检测的节点具有将header从下游传播到上游的能力，通常在所有代理中，例如Envoy [11]，Nginx [12] ]，Spring Cloud Gateway [13]。作为代理，它具有将所有header从下游转发到上游的功能，以将某些信息保留在header中，包括tracing上下文，身份验证信息，浏览器信息和路由信息，以使它们可被位于后面的业务服务访问。proxy，例如Envoy路由配置[14]。当无法检测某些代理时，无论什么原因，它都不会影响拓扑检测。
 
 在这种情况下， proxy address在客户端使用，并通过RPC上下文作为peer network address，并且代理将其转发到其他上游服务。然后，STAM可以检测到这种情况并生成代理作为推测节点。在STAM中，应为此网络地址生成多个别名。在检测到这两个并同步到分析节点之后，分析核心知道客户端和服务器之间至少有一个未配置的服务。因此，它将生成`client service->peer network address`，`peer->server service B`和`peer network address->server service B`的关系，如图6所示。。
