@@ -134,7 +134,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 我们感谢Apache SkyWalking项目的所有贡献者，感谢他们对此分析模型提出的建议，实现STAM的代码贡献以及在生产环境中使用STAM和SkyWalking，并提供反馈。
 
 # 执照
-这个论文和STAM在Apache 2.0中获得许可
+这篇论文和STAM使用Apache 2.0许可协议
 
 # 参考文献
 1. Dapper, a Large-Scale Distributed Systems Tracing Infrastructure, https://research.google.com/pubs/pub36356.html?spm=5176.100239.blogcont60165.11.OXME9Z
