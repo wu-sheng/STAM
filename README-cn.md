@@ -64,7 +64,7 @@ STAM核心的新拓扑分析方法是以流模式处理span。server-side span�
 
 1. 使用当前服务和实例的别名将exit span的对等方设置为客户端。`Peer network address <-> service name`和`peer network address <-> Service instance name`别名。这两个将与所有分析节点同步并节省存储空间，从而允许更多分析处理者拥有此别名信息。
 
-2. 生成的关系`parent service name -> current service name`和`parent service instance name -> current service instance name`，除非还有另外一个不同的`Peer network address <-> Service Instance Name`发现映射。在这种情况下，仅生成`peer network address <-> service name`和的关系`peer network address <-> Service instance name`的关系。
+2. 生成`parent service name -> current service name`和`parent service instance name -> current service instance name`两种关系数据，除非发现当前已经存在还有另外一个不同的`Peer network address <-> Service Instance Name`映射关系。在这种情况下，仅生成`peer network address <-> service name`的关系和`peer network address <-> Service instance name`的关系。
 
 为了分析client-side span（exit span），可能存在三种可能性。
 
