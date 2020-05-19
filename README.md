@@ -3,7 +3,7 @@
 - Sheng Wu 吴 晟
 - wusheng@apache.org
 
-[![中文版本](https://img.shields.io/badge/Translation-%E4%B8%AD%E6%96%87-green)](https://github.com/wu-sheng/STAM/blob/master/README-cn.md)
+[![中文版本](https://img.shields.io/badge/Translation-%E4%B8%AD%E6%96%87-green)](https://wu-sheng.github.io/STAM/README-cn)
 
 # Abstract
 Monitoring, visualizing and troubleshooting a large-scale distributed system is a major challenge. One common tool used today is the distributed tracing system (e.g., Google Dapper)[1], and detecting topology and metrics based on the tracing data. One big limitation of today’s topology detection is that the analysis depends on aggregating the client-side and server-side tracing spans in a given time window to generate the dependency of services. This causes more latency and memory use, because the client and server spans of every RPC must be matched in millions of randomly occurring requests in a highly distributed system. More importantly, it could fail to match if the duration of RPC between client and server is longer than the prior setup time window, or across the two windows. 
