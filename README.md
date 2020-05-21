@@ -1,4 +1,4 @@
-STAM: Enhancing Topology Auto Detection For A Highly Distributed and Large-Scale Application System
+# STAM: Enhancing Topology Auto Detection For A Highly Distributed and Large-Scale Application System
 
 - Sheng Wu 吴 晟
 - wusheng@apache.org
@@ -48,6 +48,7 @@ The traditional span of a tracing system includes the following fields [1][6][10
 In the new span model of STAM we add the following fields in the span.
 
 **Span type**. Enumeration, including exit, local and entry. Entry and Local spans are used in a networking related library. Entry spans represent a server-side networking library, such as Apache Tomcat[7]. Exit spans represent the client-side networking library, such as Apache HttpComponents [8].
+
 **Peer Network Address**. Remote "address," suitable for use in exit and entry spans. In Exit spans, the peer network address is the address by the client library to access the server.
 
 These fields usually are optionally included in many tracing system,. But in STAM, we require them in all RPC cases.
@@ -59,7 +60,7 @@ The changes of two models could eliminate the time windows in the analysis proce
 # New Topology Analysis Method
 The new topology analysis method at the core of STAM is processing the span in stream mode.
 The analysis of the server-side span, also named entry span, includes the parent service name, parent service instance name and peer of exit span. So the analysis process could establish the following results.
-1.	Set the peer of exit span as client using alias name of current service and instance. `Peer network address <-> service name` and `peer network address <-> Service instance name` aliases created. These two will sync with all analysis nodes and save storage, allowing more analysis processers to have this alias information.
+1.	Set the peer of exit span as client using alias name of current service and instance. `Peer network address <-> service name` and `peer network address <-> Service instance name` aliases created. These two will sync with all analysis nodes and persistent in the storage, allowing more analysis processers to have this alias information.
 2.	Generate relationships of `parent service name -> current service name` and `parent service instance name -> current service instance name`, unless there is another different `Peer network address <-> Service Instance Name` mapping found. In that case, only generate relationships of `peer network address <-> service name` and `peer network address <-> Service instance name`.
 
 For analysis of the client-side span (exit span), there could three possibilities. 
@@ -76,7 +77,7 @@ Figure 2, Apache SkyWalking uses STAM to detect and visualize the topology of di
 # Evaluation
 In this section, we evaluate the new models and analysis method in the context of several typical cases in which the old method loses timeliness and consistent accuracy.
 
-1.	**New Service Online or Auto Scale Out**
+- 1.**New Service Online or Auto Scale Out**
 
 New services could be added into the whole topology by the developer team randomly, or container operation platform automatically by some scale out policy, like Kubernetes [5]. The monitoring system could not be notified in any case manually. By using STAM, we could detect the new node automatically and also keep the analysis process unblocked and consistent with detected nodes. 
 In this case, a new service and network address (could be IP, port or both) are used. The peer network address <-> service mapping does not exist, the traffic of client service -> peer network address will be generated and persistent in the storage first. After mapping is generated, further traffic of client-service to server-service could be identified, generated and aggregated in the analysis platform. For filling the gap of a few traffic before the mapping generated, we require doing peer network address <-> service mapping translation again in query stage, to merge client service->peer network address and client-service to server-service. In production, the amount of VM for the whole SkyWalking analysis platform deployment is less than 100, syncing among them will finish less than 10 seconds, in most cases it only takes 3-5 seconds. And in the query stage, the data has been aggregated in minutes or seconds at least. The query merge performance is not related to how much traffic happens before the mapping generated, only affected by sync duration, in here, only 3 seconds. Due to that, in minute level aggregation topology, it only adds 1 or 2 relationship records in the whole topology relationship dataset. Considering an over 100 services topology having over 500 relationship records per minute, the payload increase for this query merge is very limited and affordable. This feature is significant in a large and high load distributed system, as we don’t need to concern its scaling capability. And in some fork versions, they choose to update the existing client service->peer network address to client-service to server-service after detecting the new mapping for peer generated, in order to remove the extra load at query stage permanently.
@@ -87,7 +88,7 @@ In this case, a new service and network address (could be IP, port or both) are 
 Figure 3, Span analysis by using the new topology analysis method
 </p>
 
-2.	**Existing Uninstrumented Nodes**
+- 2.**Existing Uninstrumented Nodes**
 
 Every topology detection method has to work in this case. In many cases, there are nodes in the production environment that can’t be instrumented. Causes for this might include:(1) Restriction of the technology. In some golang or C++ written applications, there is no easy way in Java or .Net to do auto instrumentation by the agent. So, the codes may not be instrumented automatically. (2) The middleware, such as MQ, database server, has not adopted the tracing system. This would make it difficult or time consuming to implement the middleware instrumentation. (3) A 3rd party service or cloud service doesn’t support work with the current tracing system. (4) Lack of resources: e.g., the developer or operation team lacks time to make the instrumentation ready. 
 
@@ -109,11 +110,11 @@ As shown in Figure 5, in the other case, with no server-side instrumentation, th
 Figure 5, STAM traffic generation when no server-side instrumentation
 </p>
 
-3.	**Uninstrumented Node Having Header Forward Capability**
+- 3.**Uninstrumented Node Having Header Forward Capability**
 
 Besides the cases we evaluated in (2) Uninstrumented Nodes, there is one complex and special case: the instrumented node has the capability to propagate the header from downstream to upstream, typically in all proxy, such as Envoy[11], Nginx[12], Spring Cloud Gateway[13]. As proxy, it has the capability to forward all headers from downstream to upstream to keep some of information in the header, including the tracing context, authentication, browser information, and routing information, in order to make them accessible by the business services behind the proxy, like Envoy route configuration [14]. When some proxy can’t be instrumented, no matter what the reason, it should not affect the topology detection. 
 
-In this case, the proxy address would be used at the client side and propagate through RPC context as peer network address, and the proxy forwards this to different upstream services. Then STAM could detect this case and generate the proxy as a conjectural node. In the STAM, more than one alias names for this network address should be generated. After those two are detected and synchronized to the analysis node, the analysis core knows there is at least one uninstrumented service standing between client and servers. So, it will generate the relationships of `client service->peer network address`, `peer->server service B` and `peer network address ->server service B`, as shown in Figure 6.
+In this case, the proxy address would be used at the client side and propagate through RPC context as peer network address, and the proxy forwards this to different upstream services. Then STAM could detect this case and generate the proxy as a conjectural node. In the STAM, more than one alias names for this network address should be generated. After those two are detected and synchronized to the analysis node, the analysis core knows there is at least one uninstrumented service standing between client and servers. So, it will generate the relationships of `client service->peer network address`, `peer->server service B` and `peer network address ->server service C`, as shown in Figure 6.
 
 <p align="center">
 <img src="images/STAM-uninstrumentation-proxy.png"/>
